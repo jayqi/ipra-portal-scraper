@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>IPRA Portal Scrape</title>
+  </head>
+  <body>
+    <h1>IPRA Portal Scrape</h1>
+    <p><a href="http://portal.iprachicago.org/">Data Source</a> -
+        <a href="https://github.com/invinst/shootings-data">Invisible Institute project</a> -
+        <a href="https://github.com/jayqi/ipra-portal-scraper">Source Code</a> -
+        <a href="https://github.com/mohsen1/json-formatter-js">JSON Formatter</a>
+    </p>
+    <div id="json"></div>
+    <script   src="https://code.jquery.com/jquery-3.0.0.min.js"   integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="   crossorigin="anonymous"></script>
+    <script src="./json-formatter-js.js"></script>
+    <script>
+    var data;
+    $.getJSON("./2016-06-22_14-21.json", function(filedata){
+        data = filedata;
+        formatter = new JSONFormatter(data,2,{hoverPreviewEnabled: true});
+        var out = document.getElementById("json");
+        out.innerHTML = '';
+        out.appendChild(formatter.render());
+    });
+
+    </script>
+  </body>
+</html>

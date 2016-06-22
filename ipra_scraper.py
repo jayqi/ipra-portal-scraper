@@ -16,10 +16,12 @@ re_subjectsmultfind = re.compile(r"Subjects:")
 re_fileid = re.compile(r"'#modal(\d+)'")
 re_mediasrc = re.compile(r"var\s+src\s*=\s*'([^']+)'")
 
+now = dt.datetime.now()
+
 def scrape_ipra():
 
     data = {'records' : {},
-       'scraped_date_time' : dt.datetime.now().isoformat()}
+       'scraped_date_time' : now.isoformat()}
 
     # Get index page table
     print('Scraping index table...')
@@ -146,5 +148,5 @@ def scrape_ipra():
 if __name__ == "__main__":
     data = scrape_ipra()
 
-    with open(data['scraped_date_time']+'.json','w') as outfile:
+    with open(now.strftime('%Y-%m-%d_%H-%M')+'.json','w') as outfile:
         json.dump(data,outfile)
