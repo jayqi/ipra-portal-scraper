@@ -10,9 +10,9 @@ re_tab = re.compile(r'\t')
 re_notefind = re.compile(r"Note:")
 re_notecapture = re.compile(r"Note:\s*(.*)")
 re_juvnotefind = re.compile(r"Pursuant")
-re_subjectfind = re.compile(r"Subject:")
-re_subjectcapture = re.compile(r"Subject:\s*(.*)")
-re_subjectsmultfind = re.compile(r"Subjects:")
+re_subjectfind = re.compile(r"Subject[^<:s]*:")
+re_subjectcapture = re.compile(r"Subject[^<:s]*:\s*(.*)")
+re_subjectsmultfind = re.compile(r"Subject[^<:s]*s[^<:s]*:")
 re_fileid = re.compile(r"'#modal(\d+)'")
 re_mediasrc = re.compile(r"var\s+src\s*=\s*'([^']+)'")
 
@@ -83,11 +83,12 @@ def scrape_ipra():
             if re_juvnotefind.search(p.text):
                 record['notes'].append(p.text.strip())
 
+        # Subjects
+        record['subjects'] = []
         # Get single Subject if exists
         subject = entry.find('p',string=re_subjectfind)
         if subject:
             record['subjects'] = [re_subjectcapture.search(subject.string).groups()[0].strip()]
-
         # Get multiple Subjects if exists
         if entry.find('p',string=re_subjectsmultfind):
             record['subjects'] = [li.string.strip() for li in entry.ul.find_all('li')]
@@ -143,6 +144,7 @@ def scrape_ipra():
                         'file_id' : file_id,
                         'url' : url})
 
+    print('Complete. Scraped %d records.' % len(data['records']))
     return data
 
 if __name__ == "__main__":
@@ -150,3 +152,4 @@ if __name__ == "__main__":
 
     with open(now.strftime('%Y-%m-%d_%H-%M')+'.json','w') as outfile:
         json.dump(data,outfile)
+    print('Saved to: ' + now.strftime('%Y-%m-%d_%H-%M')+'.json')
