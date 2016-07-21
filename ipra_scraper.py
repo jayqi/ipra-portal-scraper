@@ -10,9 +10,7 @@ re_tab = re.compile(r'\t')
 re_notefind = re.compile(r"Note:")
 re_notecapture = re.compile(r"Note:\s*(.*)")
 re_juvnotefind = re.compile(r"Pursuant")
-re_subjectfind = re.compile(r"Subject[^<:s]*:")
-re_subjectcapture = re.compile(r"Subject[^<:s]*:\s*(.*)")
-re_subjectsmultfind = re.compile(r"Subject[^<:s]*s[^<:s]*:")
+re_subjectcapture = re.compile(r"Subject[^<:]*:([^<:]+)")
 re_fileid = re.compile(r"'#modal(\d+)'")
 re_mediasrc = re.compile(r"var\s+src\s*=\s*'([^']+)'")
 
@@ -85,13 +83,15 @@ def scrape_ipra():
 
         # Subjects
         record['subjects'] = []
-        # Get single Subject if exists
-        subject = entry.find('p',string=re_subjectfind)
-        if subject:
-            record['subjects'] = [re_subjectcapture.search(subject.string).groups()[0].strip()]
-        # Get multiple Subjects if exists
-        if entry.find('p',string=re_subjectsmultfind):
-            record['subjects'] = [li.string.strip() for li in entry.ul.find_all('li')]
+        # Check if there is an unordered list of multiple subjects
+        subjectlist = entry.find('ul')
+        if subjectlist:
+            for subject in subjectlist.find_all('li'):
+                record['subjects'].append(subject.string.strip())
+        # Else check for single line subject
+        elif entry.find('p',string=re_subjectcapture):
+            subjectline = entry.find('p',string=re_subjectcapture).string
+            record['subjects'].append(re_subjectcapture.search(subjectline).groups()[0].strip())
 
         # Scrape media
         media = entry.find_all('div',attrs={'class' : 'col-sm-4'})
