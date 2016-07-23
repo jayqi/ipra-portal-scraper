@@ -150,6 +150,9 @@ def scrape_ipra():
 if __name__ == "__main__":
     data = scrape_ipra()
 
-    with open(now.strftime('%Y-%m-%d_%H-%M')+'.json','w') as outfile:
+    with open('scrapes/'+now.strftime('%Y-%m-%d_%H-%M')+'.json','w') as outfile:
         json.dump(data,outfile)
-    print('Saved to: ' + now.strftime('%Y-%m-%d_%H-%M')+'.json')
+    print('Saved to: ' + 'scrapes/' + now.strftime('%Y-%m-%d_%H-%M')+'.json')
+    with open('most_recent_scrape.json','w') as outfile:
+        json.dump(data,outfile)
+    print('Saved to: most_recent_scrape.json')

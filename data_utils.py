@@ -102,9 +102,10 @@ def json_to_incidents_csv(filename,outfilename='incidents_summary.csv'):
             ])
 
     # Use pandas to write csv file
+    print('Writing to',outfilename)
     df = pd.DataFrame(rowlist[1:],columns=rowlist[0])
     df.to_csv(outfilename,index=False)
-
+    print('... Done.')
 
 def json_to_media_csv(filename,outfilename='media_files.csv'):
     """Reads in scraped json file and writes CSV table of media files
@@ -125,8 +126,10 @@ def json_to_media_csv(filename,outfilename='media_files.csv'):
                     ])
 
     # Use pandas to write csv file
+    print('Writing to',outfilename)
     df = pd.DataFrame(rowlist[1:],columns=rowlist[0])
     df.to_csv(outfilename,index=False)
+    print('... Done.')
 
 def json_to_subject_csv(filename,outfilename='subjects.csv'):
     """Reads in scraped json file and writes CSV table of subjects in cases
@@ -146,9 +149,10 @@ def json_to_subject_csv(filename,outfilename='subjects.csv'):
                     ])
 
     # Use pandas to write csv file
+    print('Writing to',outfilename)
     df = pd.DataFrame(rowlist[1:],columns=rowlist[0])
     df.to_csv(outfilename,index=False)
-
+    print('... Done.')
 
 
 
@@ -162,6 +166,7 @@ if __name__ == '__main__':
         elif sys.argv[1] == "compare":
             compare_scrapes(sys.argv[2],sys.argv[3])
         elif sys.argv[1] == "writecsv":
+            print('Reading',sys.argv[2])
             json_to_incidents_csv(sys.argv[2])
             json_to_media_csv(sys.argv[2])
             json_to_subject_csv(sys.argv[2])

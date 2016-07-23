@@ -16,7 +16,7 @@
     <script src="./json-formatter-js.js"></script>
     <script>
     var data;
-    $.getJSON("./2016-06-22_14-21.json", function(filedata){
+    $.getJSON("./most_recent_scrape.json", function(filedata){
         data = filedata;
         formatter = new JSONFormatter(data,2,{hoverPreviewEnabled: true});
         var out = document.getElementById("json");
