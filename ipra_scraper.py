@@ -23,7 +23,7 @@ def scrape_ipra():
 
     # Get index page table
     print('Scraping index table...')
-    url = "http://portal.iprachicago.org/wp-content/themes/ipra/DynamicSearch.php"
+    url = "http://www.iprachicago.org/wp-content/themes/ipra/DynamicSearch.php"
     headers = {
         'user-agent' : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
         }
